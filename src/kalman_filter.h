@@ -23,6 +23,10 @@ public:
   // measurement covariance matrix
   Eigen::MatrixXd R_;
 
+  //set the acceleration noise components
+  int noise_ax;
+  int noise_ay;
+
   /**
    * Constructor
    */
