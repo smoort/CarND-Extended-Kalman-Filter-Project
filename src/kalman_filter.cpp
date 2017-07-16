@@ -17,7 +17,6 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
   H_ = H_in;
   R_ = R_in;
   Q_ = Q_in;
-  std::cout << "inside kf_ Init " << x_in << std::endl;
 }
 
 void KalmanFilter::Predict() {
@@ -65,23 +64,15 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   double theta = atan2(py, px);
   double rho_dot = ((px * vx) + (py * vy)) / rho;
 
-  while(theta < -M_PI || theta > M_PI) {
-    while (theta < -M_PI)
-        theta += 2 * M_PI;
-    while (theta > M_PI)
-        theta -= 2 * M_PI;
-  }
   VectorXd z_pred = VectorXd(3);
   z_pred << rho, theta, rho_dot;
 
   VectorXd y = z - z_pred;
 
-  while(y(1) < -M_PI || y(1) > M_PI) {
-    while (y(1) < -M_PI)
-        y(1) += 2 * M_PI;
-    while (y(1) > M_PI)
-        y(1) -= 2 * M_PI;
-  }
+  while (y(1) < -M_PI)
+    y(1) += 2 * M_PI;
+  while (y(1) > M_PI)
+    y(1) -= 2 * M_PI;
 
 //  std::cout << "theta values before and after " << theta << " " << y(1) << std::endl;
   MatrixXd Ht = H_.transpose();
